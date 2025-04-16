@@ -6,6 +6,7 @@ INF=1e8
 
 def dijkstra(start):
     q=[]
+    root=[[] for _ in range(n+1)]
     heapq.heappush(q,(0,start,[start])) # 현재까지 거리, 시작위치, 지금까지의 경로
     distance[start][start]=0
 
@@ -18,28 +19,23 @@ def dijkstra(start):
             if new_cost<distance[start][i[0]]:
                 distance[start][i[0]]=new_cost
                 new_route=route+[i[0]]
-                result[start][i[0]]=new_route
+                root[i[0]]=new_route
                 heapq.heappush(q,(new_cost,i[0],new_route))
-
+    for i in root[1:]:
+        if i:
+            print(i[1],end=' ')
+        else:
+            print('-',end=' ')
+    print()
 
 n,m=map(int,input().rstrip().split())
 graph=[[] for _ in range(n+1)]
 distance=[[INF]*(n+1) for _ in range(n+1)] 
-result=[[[] for _ in range(n+1)] for _ in range(n+1)]
 
 for _ in range(m):
     s,e,l=map(int,input().rstrip().split())
     graph[s].append((e,l))
     graph[e].append((s,l))
 
-
 for i in range(1,n+1):
     dijkstra(i)
-
-for row in result[1:]:
-    for i in row[1:]:
-        if i:
-            print(i[1],end=' ')
-        else:
-            print('-',end=' ')
-    print()
